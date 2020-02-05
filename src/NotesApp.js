@@ -11,7 +11,7 @@ class NotesApp extends React.Component {
         super(props);
         this.state = {
             currentNodeId: '',
-            searchText: 'help me I am a search bar',
+            searchText: '',
             notes: [
                 {
                     id: 'a1b2c3',
@@ -47,13 +47,29 @@ class NotesApp extends React.Component {
                 handleChange={this._setSearchText}
                 text={this.state.searchText}/>
                 <NotesList 
-                notes={this.state.notes}
+                notes={this._getFilteredNotes()}
                 handleClick={this._selectNote}
                 />
-                <NoteEditor />
+                <NoteEditor searchText={this.state.searchText}/>
             </div>
         );
     }
+
+
+    
+    _getFilteredNotes = () => {
+        const filteredArray = this.state.notes.filter(note => {
+
+            const titleDoesMatch = note.title.toLowerCase().includes(this.state.searchText.toLowerCase());
+            const copyDoesMatch = note.copy.toLowerCase().includes(this.state.searchText.toLowerCase());
+
+            return titleDoesMatch || copyDoesMatch;
+
+        });
+
+        return filteredArray;
+    };
+
 
     _setSearchText = (searchText) => {
         this.setState({
