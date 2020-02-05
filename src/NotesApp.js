@@ -10,7 +10,29 @@ class NotesApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchText: 'help me I am a search bar'
+            searchText: 'help me I am a search bar',
+            notes: [
+                {
+                    id: 'a1b2c3',
+                    title: 'first note',
+                    copy: 'lalala'
+                },
+                {
+                    id: 'a1b2z666',
+                    title: 'second note',
+                    copy: 'Hello'
+                },
+                {
+                    id: 'a1b2jdg77',
+                    title: 'third note',
+                    copy: 'Goodbye'
+                },
+                {
+                    id: 'a1b2ZZZS',
+                    title: 'fourth note',
+                    copy: 'dum dum dum'
+                },
+            ]
         };
     }
 
@@ -23,7 +45,9 @@ class NotesApp extends React.Component {
                 <SearchBar 
                 handleChange={this._setSearchText}
                 text={this.state.searchText}/>
-                <NotesList />
+                <NotesList 
+                notes={this.state.notes}
+                />
                 <NoteEditor />
             </div>
         );
