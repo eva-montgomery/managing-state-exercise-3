@@ -13,6 +13,8 @@ class NoteEditor extends React.Component {
 
     // Receiving the new props and the existing state
     static getDerivedStateFromProps(props, state) {
+        // static means there is not `this`keyword
+
         console.log('We are in getDerivedStateFromProps');
 
         console.table(props.note);
@@ -38,7 +40,9 @@ class NoteEditor extends React.Component {
       
     
         return (
+          
             <div>
+                  <form onSubmit={this._handleSubmit}> 
                 <input 
                     value={this.state.changedNote.title}
                     onChange={(event) => {
@@ -58,11 +62,18 @@ class NoteEditor extends React.Component {
                         });
                     }}
                 />
+                <button>Save</button>
+                </form>
             </div>
         );
 
 
 }
+
+    _handleSubmit = (event) => {
+        event.preventDefault();
+        this.props.handleChange(this.state.changedNote);
+    }
 
     _updateLocalNote = (changedNote) => {
         this.setState({
