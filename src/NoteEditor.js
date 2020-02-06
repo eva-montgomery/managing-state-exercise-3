@@ -15,6 +15,15 @@ class NoteEditor extends React.Component {
     static getDerivedStateFromProps(props, state) {
         console.log('We are in getDerivedStateFromProps');
 
+        console.table(props.note);
+        console.table(state.changedNote);
+
+        if (props.note.id === state.changedNote.id) {
+            return {
+                ...state
+            }
+        } else {
+
         // we return the new version of state.
         return {
             ...state,
@@ -22,21 +31,19 @@ class NoteEditor extends React.Component {
                 ...props.note
             }
         }
+        }
     }
 
     render () {
-        const {
-            note,
-            handleChange,
-        } = this.props;
+      
     
         return (
             <div>
                 <input 
                     value={this.state.changedNote.title}
                     onChange={(event) => {
-                        handleChange({
-                            ...note,
+                        this._updateLocalNote({
+                            ...this.state.changedNote,
                             title: event.target.value
                         });
                     }}
@@ -45,8 +52,8 @@ class NoteEditor extends React.Component {
                 <textarea 
                     value={this.state.changedNote.copy}
                     onChange={(event) => {
-                        handleChange({
-                            ...note,
+                        this._updateLocalNote({
+                            ...this.state.changedNote,
                             copy: event.target.value
                         });
                     }}
@@ -56,6 +63,12 @@ class NoteEditor extends React.Component {
 
 
 }
+
+    _updateLocalNote = (changedNote) => {
+        this.setState({
+            changedNote
+        });
+    }
 
 }
 
