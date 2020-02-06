@@ -10,7 +10,7 @@ class NotesApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentNodeId: '',
+            currentNoteId: '',
             searchText: '',
             notes: [
                 {
@@ -41,7 +41,7 @@ class NotesApp extends React.Component {
     render() {
         return (
             <div>
-                <h1>Best Notes App Ever</h1>
+                <h1>Notes App</h1>
                 <NewNote />
                 <SearchBar 
                 handleChange={this._setSearchText}
@@ -51,12 +51,14 @@ class NotesApp extends React.Component {
                 handleClick={this._selectNote}
                 />
                 <NoteEditor 
-                note={this._getNoteById()}/>
+                note={this._getNoteById()}
+                handleChange={this._updateNote}
+                />
             </div>
         );
     }
 
-    _getNoteById = () => this.state.notes.find(note => note.id === this.state.currentNodeId) || {}
+    _getNoteById = () => this.state.notes.find(note => note.id === this.state.currentNoteId) || {}
     
     
     _getFilteredNotes = () => {
@@ -81,12 +83,37 @@ class NotesApp extends React.Component {
         });
     }
 
-    _selectNote = (currentNodeId) => {
+    _selectNote = (currentNoteId) => {
         this.setState({
-            currentNodeId
+            currentNoteId
         }, () => {
             console.log('updated current id')
         });
+    }
+
+    _updateNote = (changedNote) => {
+        console.table(changedNote);
+
+        // Alternative to super-extra-fancy version that uses .map()
+        // const updatedNotesArray = [ ...this.state.notes ];
+        // const theIndex = updatedNotesArray.findIndex(note => note.id === changedNote.id);
+        // updatedNotesArray[theIndex] = changedNote;
+
+        // Super-extra-fancy version:
+        const updatedNotesArray = this.state.notes.map(note => {
+            if (note.id !== this.state.currentNoteId) {
+                return note;
+            } else {
+                return changedNote;
+            }
+        });
+
+        this.setState({
+            notes: updatedNotesArray
+        }, () => {
+            console.log(`Updated note with id ${changedNote.id}`);
+        });     
+
     }
 
 }
